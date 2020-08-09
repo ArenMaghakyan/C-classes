@@ -17,8 +17,9 @@ namespace Lesson5.Exercise
         /// </summary>
         /// <param name="name">The student name</param>
         /// <param name="surname">The student surname</param>
-        public Student(string name, string surname)
-            : base(name, surname)
+        /// <param name="age"></param>
+        public Student(string name, string surname, int age)
+            : base(name, surname, age)
         {
             _id = Guid.NewGuid();
         }

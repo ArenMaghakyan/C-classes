@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace Lesson5.Exercise
@@ -24,8 +23,7 @@ namespace Lesson5.Exercise
             // Find the names of students for a discipline which has the maximum number of students
             // option 1
             var maxStudentCount = disciplines.Max(discipline => discipline.GetStudents().Count());
-            var biggestDisciplineOp1 = disciplines
-                .Where(discipline => discipline.GetStudents().Count() == maxStudentCount).FirstOrDefault();
+            var biggestDisciplineOp1 = disciplines.Where(discipline => discipline.GetStudents().Count() == maxStudentCount).FirstOrDefault();
 
             // option 2
             var biggestDisciplineOp2 = disciplines.OrderByDescending(o => o.GetStudents().Count()).FirstOrDefault();
@@ -44,6 +42,56 @@ namespace Lesson5.Exercise
 
             // Find the names of disciplines sorted by the number of students assigned to the discipline
             var sortedDiscipline = disciplines.OrderByDescending(discipline => discipline.GetStudents().Count());
+
+
+
+            // HomeWork
+
+            //2.The names of students for a specific discipline.
+
+            var specificName = "English";
+            var discipline = disciplines.Find(d=> d.Name == specificName);
+            if (discipline != null)
+            {
+               var studentList =  discipline.GetStudents()
+                    .GroupBy(g => new {g.Name, g.Surname})
+                    .Select(s => s.Key);
+            }
+
+
+            //4.The lesson with the earliest start date.
+
+            var earliestDate1 = disciplines.SelectMany(discipline => discipline.GetLessons()).Min(m => m.StartDate);
+
+            var earliestLessons1 = disciplines.SelectMany(discipline => discipline.GetLessons()
+                .Where(w => w.StartDate == earliestDate1));
+
+                // or if we need just first occurence of earliest lesson
+
+            var earliestLessons2 = disciplines.SelectMany(discipline => discipline.GetLessons()
+                .Where(w => w.StartDate == earliestDate1)).FirstOrDefault();
+
+
+            //6.The names of lecturers which teach the discipline which has the maximum number of students.
+
+            var largestDiscipline = disciplines.OrderByDescending(o => o.GetStudents().Count()).FirstOrDefault();
+
+            if (largestDiscipline != null)
+            {
+                var lecturers = largestDiscipline.GetLecturers();
+            }
+
+            //8.The pairs of student name and discipline name(students are assigned to discipline).
+
+                // Not succeeded
+
+            //10.The names of all students which age is less than 30.
+
+            var youngerStudents = disciplines.SelectMany(d => d.GetStudents())
+                .Where(s => s.Age < 30)
+                .GroupBy(g => new {g.Name, g.Surname})
+                .Select(s => s.Key);
+
         }
 
         /// <summary>
@@ -85,10 +133,10 @@ namespace Lesson5.Exercise
         {
             return new List<Student>
             {
-                new Student("John", "Smith"),
-                new Student("Ann", "Jones"),
-                new Student("Mary", "Wilson"),
-                new Student("William", "Jackson"),
+                new Student("John", "Smith", 15),
+                new Student("Ann", "Jones", 34),
+                new Student("Mary", "Wilson", 24),
+                new Student("William", "Jackson", 29),
              
             };
         }
@@ -101,8 +149,8 @@ namespace Lesson5.Exercise
         {
             return new List<Lecturer>
             {
-                new Lecturer("Paul", "Flin"),
-                new Lecturer("Elise", "Black")
+                new Lecturer("Paul", "Flin", 42),
+                new Lecturer("Elise", "Black", 32)
             };
         }
 
@@ -127,14 +175,14 @@ namespace Lesson5.Exercise
         {
             return new List<Student>
             {
-                new Student("John", "Smith"),
-                new Student("Ann", "Jones"),
-                new Student("Alice", "White"),
-                new Student("William", "Jackson"),
-                new Student("Robert", "Harris"),
-                new Student("Sophia", "Turner"),
-                new Student("Edward", "Wood"),
-                new Student("Martha", "Hall"),
+                new Student("John", "Smith", 12),
+                new Student("Ann", "Jones", 24),
+                new Student("Alice", "White", 35),
+                new Student("William", "Jackson", 37),
+                new Student("Robert", "Harris", 18),
+                new Student("Sophia", "Turner", 19),
+                new Student("Edward", "Wood", 40),
+                new Student("Martha", "Hall", 19),
             };
         }
 
@@ -146,7 +194,7 @@ namespace Lesson5.Exercise
         {
             return new List<Lecturer>
             {
-                new Lecturer("Dorothy", "Evans")
+                new Lecturer("Dorothy", "Evans", 39)
             };
         }
 
